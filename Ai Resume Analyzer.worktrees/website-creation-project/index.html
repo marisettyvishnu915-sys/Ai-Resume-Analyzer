@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI Resume Analyzer analyzes resumes and job descriptions to improve ATS and job matching." />
+  <title>AI Resume Analyzer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="site-frame">
+    <header class="site-header">
+      <div class="container header-wrap">
+        <a class="brand" href="#" aria-label="AI Resume Analyzer">
+          <span class="brand-mark">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 3h9l4 4v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="2" />
+              <path d="M10 13l2 2 4-5" fill="none" stroke="currentColor" stroke-width="2" />
+              <path d="M9 8h5" fill="none" stroke="currentColor" stroke-width="2" />
+            </svg>
+          </span>
+          <span class="brand-text">
+            <span class="brand-name">AI Resume Analyzer</span>
+            <span class="brand-subtitle">Career Intelligence</span>
+          </span>
+        </a>
+
+        <button class="mobile-nav-toggle" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav class="main-nav">
+          <a class="active" href="#">Platform</a>
+          <a href="#features">Features</a>
+          <a href="#workflow">Workflow</a>
+          <a href="#analysis">Analysis</a>
+          <a href="#pricing">Pricing</a>
+        </nav>
+
+        <div class="header-actions">
+          <a class="button button-ghost small-button" href="#">Log in</a>
+          <a class="button button-primary small-button" href="#demo">Get started</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <section class="hero-copy">
+            <div class="eyebrow">
+              <span class="spark"></span>
+              ATS Intelligence Platform
+            </div>
+            <h1>Turn your resume into a job-winning signal.</h1>
+            <p class="hero-text">Analyze resumes against real job descriptions, uncover ATS issues, identify missing skills, and generate smarter interview-ready improvements.</p>
+
+            <div class="hero-actions">
+              <a class="button button-primary button-large" href="#demo">
+                <span>Analyze My Resume</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12h14M13 3l9 9-9 9" fill="none" stroke="currentColor" stroke-width="2" />
+                </svg>
+              </a>
+              <a class="button button-ghost button-large" href="#features">
+                <span>Explore Features</span>
+              </a>
+            </div>
+
+            <div class="hero-proof">
+              <div class="proof-item">
+                <span class="proof-number" data-target="94">0%</span>
+                <span class="proof-label">ATS Match</span>
+              </div>
+              <div class="proof-item">
+                <span class="proof-number" data-target="42">0+</span>
+                <span class="proof-label">Skill Insights</span>
+              </div>
+              <div class="proof-item">
+                <span class="proof-number" data-target="18">0m</span>
+                <span class="proof-label">Analysis Time</span>
+              </div>
+            </div>
+          </section>
+
+          <aside class="hero-panel">
+            <div class="analysis-card upload-card">
+              <div class="analysis-card-head">
+                <div>
+                  <span class="panel-kicker">Resume Scan</span>
+                  <h3>Start Analysis</h3>
+                </div>
+                <span class="status-badge">
+                  <span></span>
+                  Live
+                </span>
+              </div>
+
+              <form class="upload-form" id="resumeForm">
+                <div class="upload-zone">
+                  <label class="upload-drop" for="resumeFile">
+                    <input type="file" id="resumeFile" name="resumeFile" accept=".pdf,.docx" required />
+                    <span class="upload-icon">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 3v14" fill="none" stroke="currentColor" stroke-width="2" />
+                        <path d="M5 20h14" fill="none" stroke="currentColor" stroke-width="2" />
+                        <path d="M5 11l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2" />
+                      </svg>
+                    </span>
+                    <span class="upload-text" id="fileName">Choose a PDF or DOCX resume</span>
+                  </label>
+                </div>
+
+                <label class="field-label" for="jobDescription">Job Description</label>
+                <textarea class="job-description" id="jobDescription" name="jobDescription" placeholder="Paste the role description here..." required></textarea>
+
+                <div class="analysis-actions upload-actions">
+                  <button class="button button-primary button-small" id="analyzeBtn" type="submit">
+                    <span>Analyze Resume</span>
+                  </button>
+                  <button class="button button-ghost button-small" id="clearBtn" type="reset">
+                    <span>Clear</span>
+                  </button>
+                </div>
+              </form>
+
+              <div class="upload-result" id="uploadResult">
+                <div class="mini-summary">
+                  <span class="mini-label">Status</span>
+                  <span class="mini-value" id="resultStatus">Ready</span>
+                </div>
+                <div class="mini-summary">
+                  <span class="mini-label">File</span>
+                  <span class="mini-value" id="resultFile">No file selected</span>
+                </div>
+                <div class="mini-summary">
+                  <span class="mini-label">ATS</span>
+                  <span class="mini-value score-chip" id="atsScore">--</span>
+                </div>
+                <div class="mini-summary">
+                  <span class="mini-label">Job Match</span>
+                  <span class="mini-value" id="jobMatchScore">--</span>
+                </div>
+                <div class="mini-summary">
+                  <span class="mini-label">Overall</span>
+                  <span class="mini-value" id="overallScore">--</span>
+                </div>
+                <div class="mini-summary">
+                  <span class="mini-label">Missing Skills</span>
+                  <span class="mini-value" id="missingSkills">No gaps yet</span>
+                </div>
+                <div class="mini-summary">
+                  <span class="mini-label">Keywords</span>
+                  <span class="mini-value" id="recommendedKeywords">None</span>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="logo-strip">
+        <div class="container logo-strip-grid">
+          <span>ATS Readiness</span>
+          <span>Skill Gap Mapping</span>
+          <span>Keyword Optimization</span>
+          <span>Resume Coaching</span>
+        </div>
+      </section>
+
+      <section class="section feature-section" id="features">
+        <div class="container">
+          <div class="section-heading centered">
+            <span class="section-tag">The AI Resume Platform</span>
+            <h2>From upload to opportunity</h2>
+            <p>AI Resume Analyzer provides resume analysis, ATS guidance, and role-specific language recommendations that make your profile easier to rank.</p>
+          </div>
+
+          <div class="feature-grid">
+            <article class="feature-card">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 19h16M6 15l4-4 4 4 5-7" fill="none" stroke="currentColor" stroke-width="2" />
+                </svg>
+              </div>
+              <h3>Detailed Score Analysis</h3>
+              <p>Evaluate your resume with clear scoring across ATS compatibility, overall quality, and role-specific job match.</p>
+              <a href="#analysis" class="card-link">View insights <span>→</span></a>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 7h14v7H5z" fill="none" stroke="currentColor" stroke-width="2" />
+                  <path d="M5 17h14" fill="none" stroke="currentColor" stroke-width="2" />
+                  <path d="M8 21h8" fill="none" stroke="currentColor" stroke-width="2" />
+                </svg>
+              </div>
+              <h3>ATS Optimization</h3>
+              <p>Detect formatting and keyword issues that can prevent your resume from being parsed or ranked in applicant tracking systems.</p>
+              <a href="#analysis" class="card-link">Improve fit <span>→</span></a>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 12l9-9 9 9-9 9-9-9z" fill="none" stroke="currentColor" stroke-width="2" />
+                  <path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="2" />
+                </svg>
+              </div>
+              <h3>Skill Gap Guidance</h3>
+              <p>Compare your previous experience against job requirements and identify the strongest skills to add or improve.</p>
+              <a href="#workflow" class="card-link">See workflow <span>→</span></a>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 5h16v6H4z" fill="none" stroke="currentColor" stroke-width="2" />
+                  <path d="M4 14h16v6H4z" fill="none" stroke="currentColor" stroke-width="2" />
+                </svg>
+              </div>
+              <h3>Role-Based Keywords</h3>
+              <p>Generate expert keyword recommendations and improve your resume language for role-specific search and screening.</p>
+              <a href="#demo" class="card-link">Get keywords <span>→</span></a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section workflow-section" id="workflow">
+        <div class="container workflow-grid">
+          <div class="workflow-copy">
+            <span class="section-tag">How It Works</span>
+            <h2>Analyze, optimize, and apply with confidence.</h2>
+            <p>Our workflow turns your existing resume into a clear action plan for better recruiter visibility and stronger interview preparation.</p>
+
+            <div class="workflow-list">
+              <div class="workflow-item">
+                <span class="workflow-step">01</span>
+                <div>
+                  <h3>Upload your resume</h3>
+                  <p>Drop in a PDF or DOCX resume and import the latest job description.</p>
+                </div>
+              </div>
+              <div class="workflow-item">
+                <span class="workflow-step">02</span>
+                <div>
+                  <h3>Run AI analysis</h3>
+                  <p>Get structured insights around skills, ATS compatibility, strengths, and gaps.</p>
+                </div>
+              </div>
+              <div class="workflow-item">
+                <span class="workflow-step">03</span>
+                <div>
+                  <h3>Improve and apply</h3>
+                  <p>Use recommendations, keyword suggestions, and project bullet rewrites to improve your profile.</p>
+                </div>
+              </div>
+            </div>
+
+            <a class="button button-primary button-large" href="#demo">
+              <span>Start Free Analysis</span>
+            </a>
+          </div>
+
+          <div class="workflow-panel">
+            <div class="panel-window">
+              <div class="panel-window-head">
+                <span class="window-dots">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </span>
+                <span class="window-title">analysis-report.ai</span>
+              </div>
+              <div class="window-content">
+                <div class="window-card">
+                  <span class="window-card-label">Overall Score</span>
+                  <span class="window-card-score">87/100</span>
+                  <div class="mini-bars">
+                    <span style="height: 30%;"></span>
+                    <span style="height: 48%;"></span>
+                    <span style="height: 62%;"></span>
+                    <span style="height: 59%;"></span>
+                    <span style="height: 80%;"></span>
+                    <span style="height: 76%;"></span>
+                    <span style="height: 92%;"></span>
+                    <span style="height: 72%;"></span>
+                  </div>
+                </div>
+                <div class="report-lines">
+                  <div class="report-line">
+                    <span class="report-label">ATS Compliance</span>
+                    <span class="report-status success">Optimized</span>
+                  </div>
+                  <div class="report-line">
+                    <span class="report-label">Skills Alignment</span>
+                    <span class="report-status">+6 matches</span>
+                  </div>
+                  <div class="report-line">
+                    <span class="report-label">Missing Keywords</span>
+                    <span class="report-status warning">3 detected</span>
+                  </div>
+                </div>
+                <div class="improvement-list">
+                  <div class="improvement-row">
+                    <span class="improvement-icon success-icon">✓</span>
+                    <span>Tailor project bullet points</span>
+                  </div>
+                  <div class="improvement-row">
+                    <span class="improvement-icon">+</span>
+                    <span>Add leadership and analytics keywords</span>
+                  </div>
+                  <div class="improvement-row">
+                    <span class="improvement-icon warning-icon">!</span>
+                    <span>Improve education visibility</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section dashboard-section" id="analysis">
+        <div class="container">
+          <div class="section-heading centered">
+            <span class="section-tag">Insight Dashboard</span>
+            <h2>Every signal your job search needs</h2>
+          </div>
+
+          <div class="dashboard-grid">
+            <article class="dashboard-card">
+              <span class="dashboard-card-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 19h16M7 15l3-3 3 3 4-7" fill="none" stroke="currentColor" stroke-width="2" />
+                </svg>
+              </span>
+              <div>
+                <span class="dashboard-card-label">Job Match Score</span>
+                <span class="dashboard-card-score">86%</span>
+                <p>Role alignment based on candidate experience and keywords.</p>
+              </div>
+            </article>
+
+            <article class="dashboard-card">
+              <span class="dashboard-card-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 5h14v14H5z" fill="none" stroke="currentColor" stroke-width="2" />
+                  <path d="M9 10h6M9 14h6" fill="none" stroke="currentColor" stroke-width="2" />
+                </svg>
+              </span>
+              <div>
+                <span class="dashboard-card-label">Missing Skills</span>
+                <span class="dashboard-card-score">03</span>
+                <p>Priority learning areas recommended from the job brief.</p>
+              </div>
+            </article>
+
+            <article class="dashboard-card">
+              <span class="dashboard-card-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 7h16v10H4z" fill="none" stroke="currentColor" stroke-width="2" />
+                  <path d="M4 18h16" fill="none" stroke="currentColor" stroke-width="2" />
+                </svg>
+              </span>
+              <div>
+                <span class="dashboard-card-label">ATS Points</span>
+                <span class="dashboard-card-score">91</span>
+                <p>Best-practice resume structure and keyword profile.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section testimonial-section">
+        <div class="container testimonial-grid">
+          <div class="testimonial-card">
+            <span class="quote-mark">“</span>
+            <p class="testimonial-text">The analysis pointed out the exact ATS issues and missing skills I needed to address before my next interview round.</p>
+            <div class="testimonial-author">
+              <span class="avatar">AR</span>
+              <div>
+                <span class="author-name">Aarav Raman</span>
+                <span class="author-role">Data Analyst</span>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-content">
+            <span class="section-tag">Career Optimization</span>
+            <h2>Make every application more precise.</h2>
+            <p>Use AI-generated scoring, matching skills, and coaching guidance to craft a focused job search strategy for your next opportunity.</p>
+            <div class="testimonial-metrics">
+              <div>
+                <span class="metric-value">2.5x</span>
+                <span class="metric-label">Faster Role Targeting</span>
+              </div>
+              <div>
+                <span class="metric-value">18+</span>
+                <span class="metric-label">Insight Categories</span>
+              </div>
+              <div>
+                <span class="metric-value">1:1</span>
+                <span class="metric-label">Career Guidance</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section pricing-section" id="pricing">
+        <div class="container">
+          <div class="section-heading centered">
+            <span class="section-tag">Career Plans</span>
+            <h2>Upgrade your resume strategy</h2>
+          </div>
+
+          <div class="pricing-grid">
+            <article class="pricing-card">
+              <span class="pricing-plan">Starter</span>
+              <div class="pricing-price">
+                <span class="price">Free</span>
+                <span class="price-period">/basic</span>
+              </div>
+              <ul class="pricing-list">
+                <li>One resume analysis</li>
+                <li>ATS and keyword notes</li>
+                <li>Basic score report</li>
+              </ul>
+              <a class="button button-ghost plan-button" href="#demo">Start Free</a>
+            </article>
+
+            <article class="pricing-card featured-plan">
+              <span class="pricing-label">Popular</span>
+              <span class="pricing-plan">Pro Resume Coach</span>
+              <div class="pricing-price">
+                <span class="price">$12</span>
+                <span class="price-period">/month</span>
+              </div>
+              <ul class="pricing-list">
+                <li>Unlimited resume scans</li>
+                <li>Skill gap and keyword reports</li>
+                <li>Improved project bullet guidance</li>
+                <li>Interview question generation</li>
+              </ul>
+              <a class="button button-primary plan-button" href="#demo">Choose Pro</a>
+            </article>
+
+            <article class="pricing-card">
+              <span class="pricing-plan">Career Boost</span>
+              <div class="pricing-price">
+                <span class="price">$29</span>
+                <span class="price-period">/month</span>
+              </div>
+              <ul class="pricing-list">
+                <li>Everything in Pro</li>
+                <li>Executive summary support</li>
+                <li>LinkedIn and profile optimization</li>
+              </ul>
+              <a class="button button-ghost plan-button" href="#demo">Plan Career Boost</a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section cta-section" id="demo">
+        <div class="container cta-wrap">
+          <div class="cta-content">
+            <span class="section-tag">Get Started</span>
+            <h2>Ready to make your resume rank higher?</h2>
+            <p>Upload a resume, paste a job description, and let AI surface the insights you need.</p>
+            <div class="cta-actions">
+              <a class="button button-primary button-large" href="#">
+                <span>Analyze My Resume</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12h14M13 3l9 9-9 9" fill="none" stroke="currentColor" stroke-width="2" />
+                </svg>
+              </a>
+              <a class="button button-ghost button-large" href="#">Book a Demo</a>
+            </div>
+          </div>
+          <div class="cta-metrics">
+            <div class="cta-metric">
+              <span class="cta-metric-number">24h</span>
+              <span class="cta-metric-label">Quick Review</span>
+            </div>
+            <div class="cta-metric">
+              <span class="cta-metric-number">12+</span>
+              <span class="cta-metric-label">Career Reports</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="#">
+            <span class="brand-mark">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 3h9l4 4v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="2" />
+                <path d="M10 13l2 2 4-5" fill="none" stroke="currentColor" stroke-width="2" />
+                <path d="M9 8h5" fill="none" stroke="currentColor" stroke-width="2" />
+              </svg>
+            </span>
+            <span class="brand-text">
+              <span class="brand-name">AI Resume Analyzer</span>
+              <span class="brand-subtitle">Career Intelligence</span>
+            </span>
+          </a>
+          <p class="footer-copy">AI-powered resume intelligence for stronger ATS readiness and better job matching.</p>
+        </div>
+
+        <div class="footer-links">
+          <div>
+            <span class="footer-title">Platform</span>
+            <a href="#features">Features</a>
+            <a href="#workflow">Workflow</a>
+            <a href="#analysis">Insights</a>
+          </div>
+          <div>
+            <span class="footer-title">Company</span>
+            <a href="#">About</a>
+            <a href="#">Careers</a>
+            <a href="#">Partners</a>
+          </div>
+          <div>
+            <span class="footer-title">Resources</span>
+            <a href="#">Guides</a>
+            <a href="#">Interview Prep</a>
+            <a href="#">Pricing</a>
+          </div>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <span>© 2026 AI Resume Analyzer. All rights reserved.</span>
+        <span class="footer-socials">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+        </span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
