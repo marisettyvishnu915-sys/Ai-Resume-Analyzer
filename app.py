@@ -149,7 +149,43 @@ if not API_KEY:
 
 client = Groq(api_key=API_KEY)
 
-MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
+DEFAULT_MODEL = "openai/gpt-oss-120b"
+FALLBACK_MODELS = [
+    "openai/gpt-oss-120b",
+    "openai/gpt-oss-20b",
+    "openai/gpt-oss-safeguard-20b",
+]
+
+
+def resolve_groq_model():
+    configured_model = os.getenv("GROQ_MODEL", "").strip()
+    try:
+        available_models = {m.id for m in client.models.list().data}
+    except Exception:
+        available_models = set()
+
+    if configured_model and configured_model in available_models:
+        return configured_model
+
+    preferred = DEFAULT_MODEL
+    if available_models:
+        for model_name in FALLBACK_MODELS:
+            if model_name in available_models:
+                preferred = model_name
+                break
+        else:
+            preferred = sorted(available_models)[0]
+
+    if configured_model and configured_model not in available_models:
+        st.warning(
+            f"The configured Groq model '{configured_model}' is unavailable for this API key. "
+            f"Using '{preferred}' instead."
+        )
+
+    return preferred
+
+
+MODEL = resolve_groq_model()
 
 # --------------------------------------------------
 # CUSTOM CSS
@@ -793,10 +829,16 @@ For improved bullet points, improve the wording without inventing achievements.
         return None
 
     except Exception as e:
-        if getattr(e, "status_code", None) == 401:
+        status = getattr(e, "status_code", None)
+        if status == 401:
             st.error(
                 "Groq rejected the API key. Create a new Groq key, update GROQ_API_KEY in .env, "
                 "and restart Streamlit."
+            )
+        elif status == 404:
+            st.error(
+                "The selected Groq model is unavailable. The app has switched to a supported fallback model. "
+                "Update GROQ_MODEL in .env if you want to set a different model."
             )
         else:
             st.error(f"AI analysis failed: {e}")
